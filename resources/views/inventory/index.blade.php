@@ -12,7 +12,15 @@
         <input type="number" name="stok" class="form-control" placeholder="Stok awal" required min="0">
       </div>
       <div class="mb-2">
-        <input type="text" name="kategori" class="form-control" placeholder="Kategori (opsional)">
+        <select name="kategori" class="form-select">
+          <option value="">-- Pilih Kategori --</option>
+          <option value="Mekanis">Mekanis</option>
+          <option value="Elektrikal">Elektrikal</option>
+          <option value="Aksesoris">Aksesoris</option>
+          <option value="OEM">OEM</option>
+          <option value="Aftermarket">Aftermarket</option>
+          <option value="KW">KW</option>
+        </select>
       </div>
       <button class="btn btn-primary">Tambah</button>
     </form>
