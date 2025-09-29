@@ -68,5 +68,6 @@
 
     {{-- stack scripts untuk @push('scripts') tampil --}}
     @stack('scripts')
+</style>
 </body>
 </html>

@@ -16,11 +16,23 @@ class InventoryController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'nama_barang' => 'required',
+            'nama_barang' => 'required|max:255',
             'stok' => 'required|integer|min:0',
+            'kategori' => 'nullable|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        Inventory::create($request->only('nama_barang', 'stok', 'kategori'));
+        $gambarPath = null;
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('uploads', 'public');
+        }
+
+        Inventory::create([
+            'nama_barang' => $request->nama_barang,
+            'stok' => $request->stok,
+            'kategori' => $request->kategori,
+            'gambar' => $gambarPath,
+        ]);
 
         return redirect()->route('inventory.index')->with('success', 'Barang berhasil ditambahkan');
     }
