@@ -8,12 +8,12 @@
     <p class="lead">Sistem sederhana untuk mengelola stok barang spare part kendaraan</p>
 
     @guest
-        <a href="{{ route('login') }}" class="btn btn-primary btn btn-info">LOGIN</a>
-        <a href="{{ route('register') }}" class="btn btn-outline-secondary btn btn-secondar">REGISTER</a>
+        <a href="{{ route('login') }}" class="btn btn-primary btn btn-info" dusk="login-button">LOGIN</a>
+        <a href="{{ route('register') }}" class="btn btn-outline-secondary btn btn-secondar" dusk="register-button">REGISTER</a>
     @endguest
 
     @auth
-        <a href="{{ route('inventory.index') }}" class="btn btn-success btn-lg mt-4"><i class="fi fi-bs-box"></i>Masuk ke Inventory</a>
+        <a href="{{ route('inventory.index') }}" class="btn btn-success btn-lg mt-4" dusk="inventory-button"><i class="fi fi-bs-box"></i>Masuk ke Inventory</a>
     @endauth
 </div>
 @endsection

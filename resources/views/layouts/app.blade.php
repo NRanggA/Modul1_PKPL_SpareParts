@@ -21,21 +21,21 @@
                 <ul class="navbar-nav ms-auto">
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            <a class="nav-link" href="{{ route('login') }}" dusk="navbar-login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Register</a>
+                            <a class="nav-link" href="{{ route('register') }}" dusk="navbar-register">Register</a>
                         </li>
                     @endguest
 
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('inventory.index') }}">Inventory</a>
+                            <a class="nav-link" href="{{ route('inventory.index') }}" dusk="navbar-inventory">Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline" dusk="logout-form">
                                 @csrf
-                                <button type="submit" class="btn btn-link nav-link" style="display:inline; cursor:pointer;">
+                                <button type="submit" class="btn btn-link nav-link" style="display:inline; cursor:pointer;" dusk="logout-button">
                                     Logout
                                 </button>
                             </form>

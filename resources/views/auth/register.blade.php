@@ -44,8 +44,8 @@
 <script>
 function togglePassword(fieldId, btn) {
     const field = document.getElementById(fieldId);
-    if (!field) return; // safety
-    // cari icon di dalam tombol (jika ada)
+    if (!field) return; 
+    
     const icon = btn ? btn.querySelector('i') : null;
 
     if (field.type === "password") {

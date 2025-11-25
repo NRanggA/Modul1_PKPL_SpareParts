@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InventoryController extends Controller
 {
@@ -13,46 +14,76 @@ class InventoryController extends Controller
         return view('inventory.index', compact('items'));
     }
 
-    public function create(Request $request)
+    // ========== STORE ==========
+    public function store(Request $request)
     {
         $request->validate([
             'nama_barang' => 'required|max:255',
-            'stok' => 'required|integer|min:0',
-            'kategori' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'stok'        => 'required|integer|min:0|max:9999',
+            'kategori'    => 'nullable|string',
+            'gambar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $gambarPath = null;
+
         if ($request->hasFile('gambar')) {
             $gambarPath = $request->file('gambar')->store('uploads', 'public');
         }
 
         Inventory::create([
             'nama_barang' => $request->nama_barang,
-            'stok' => $request->stok,
-            'kategori' => $request->kategori,
-            'gambar' => $gambarPath,
+            'stok'        => $request->stok,
+            'kategori'    => $request->kategori,
+            'gambar'      => $gambarPath,
         ]);
 
-        return redirect()->route('inventory.index')->with('success', 'Barang berhasil ditambahkan');
+        return redirect()->route('inventory.index')
+            ->with('success', 'Barang berhasil ditambahkan');
     }
 
+    // ========== UPDATE ==========
     public function update(Request $request, $id)
     {
         $request->validate([
-            'stok' => 'required|integer|min:0',
+            'nama_barang' => 'required|string|max:255',
+            'kategori'    => 'required|string',
+            'stok'        => 'required|integer|min:0|max:9999',
+            'gambar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $item = Inventory::findOrFail($id);
-        $item->stok = $request->stok;
+
+        if ($request->hasFile('gambar')) {
+
+            if ($item->gambar && Storage::disk('public')->exists($item->gambar)) {
+                Storage::disk('public')->delete($item->gambar);
+            }
+
+            $item->gambar = $request->file('gambar')->store('uploads', 'public');
+        }
+
+        $item->nama_barang = $request->nama_barang;
+        $item->kategori    = $request->kategori;
+        $item->stok        = $request->stok;
+
         $item->save();
 
-        return redirect()->route('inventory.index')->with('success', 'Stok berhasil diperbarui');
+        return redirect()->route('inventory.index')
+            ->with('success', 'Data Daftar Barang Berhasil Diperbarui');
     }
 
-    public function delete($id)
+    // ========== DESTROY ==========
+    public function destroy($id)
     {
-        Inventory::findOrFail($id)->delete();
-        return redirect()->route('inventory.index')->with('success', 'Barang berhasil dihapus');
+        $item = Inventory::findOrFail($id);
+
+        if ($item->gambar && Storage::disk('public')->exists($item->gambar)) {
+            Storage::disk('public')->delete($item->gambar);
+        }
+
+        $item->delete();
+
+        return redirect()->route('inventory.index')
+            ->with('success', 'Barang berhasil dihapus');
     }
 }
